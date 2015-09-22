@@ -46,6 +46,25 @@ public class MediaPlayer {
 		});
         panel.setLayout(null);
         panel.add(btnMute);
+        
+        JButton btnDecreaseVolume = new JButton("-Volume");
+        btnDecreaseVolume.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+        		video.setVolume(video.getVolume() - 10);
+        	}
+        });
+        btnDecreaseVolume.setBounds(556, 538, 88, 23);
+        panel.add(btnDecreaseVolume);
+        
+        
+        JButton btnIncreaseVolume = new JButton("+Volume");
+        btnIncreaseVolume.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		video.setVolume(video.getVolume() + 10);
+        	}
+        });
+        btnIncreaseVolume.setBounds(654, 538, 89, 23);
+        panel.add(btnIncreaseVolume);
 
         JButton btnFord = new JButton(">>");
         btnFord.setBounds(371, 538, 75, 23);
