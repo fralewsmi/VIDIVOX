@@ -18,7 +18,12 @@ public class MediaPlayer {
     private final EmbeddedMediaPlayerComponent mediaPlayerComponent;
 
     public static void main(final String[] args) {
-    	        
+    	
+        NativeLibrary.addSearchPath(
+            RuntimeUtil.getLibVlcLibraryName(), "/Applications/vlc-2.0.0/VLC.app/Contents/MacOS/lib"
+        );
+        Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(), LibVlc.class);
+        
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -34,42 +39,38 @@ public class MediaPlayer {
         
         final EmbeddedMediaPlayer video = mediaPlayerComponent.getMediaPlayer();
         
-        JPanel panel = new JPanel();
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(mediaPlayerComponent, BorderLayout.CENTER);
         
         JButton btnMute = new JButton("Mute");
-        btnMute.setBounds(458, 538, 88, 23);
         btnMute.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				video.mute();
 			}
 		});
-        panel.setLayout(null);
-        panel.add(btnMute);
+        panel.add(btnMute, BorderLayout.NORTH);
 
         JButton btnFord = new JButton(">>");
-        btnFord.setBounds(371, 538, 75, 23);
         btnFord.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				video.skip(5000);
 			}
 		});
-        panel.add(btnFord);
+        panel.add(btnFord, BorderLayout.EAST);
 
         JButton btnBack = new JButton("<<");
-        btnBack.setBounds(139, 538, 75, 23);
         btnBack.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				video.skip(-5000);
 			}
 		});
-        panel.add(btnBack);
+        panel.add(btnBack, BorderLayout.WEST);
 
         final JLabel timeLabel = new JLabel("0 seconds");
-        timeLabel.setBounds(10, 538, 111, 23);
-        panel.add(timeLabel);
+        panel.add(timeLabel, BorderLayout.SOUTH);
         
         Timer timer = new Timer(200, new ActionListener() {
 			@Override
@@ -81,23 +82,7 @@ public class MediaPlayer {
         timer.start();
         
         frame.setContentPane(panel);
-        
-        JButton btnPlaypause = new JButton("Play/Pause");
-        btnPlaypause.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		video.pause();
-        	}
-        });
-        btnPlaypause.setBounds(231, 538, 128, 23);
-        panel.add(btnPlaypause);
-        
-        JPanel panel_1 = new JPanel();
-        panel_1.setBounds(0, 0, 1034, 527);
-        panel.add(panel_1);
-        panel_1.setLayout(new BorderLayout(0, 0));
-        panel_1.add(mediaPlayerComponent, BorderLayout.CENTER);
-        
-        
+
         frame.setLocation(100, 100);
         frame.setSize(1050, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
