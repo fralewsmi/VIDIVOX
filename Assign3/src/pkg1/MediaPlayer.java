@@ -60,7 +60,11 @@ public class MediaPlayer {
         JButton btnIncreaseVolume = new JButton("+Volume");
         btnIncreaseVolume.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-        		video.setVolume(video.getVolume() + 10);
+        		if (video.getVolume() >= 190) { // Limits the volume to 200 to prevent audio distortion.
+        			video.setVolume(200);
+        		} else {
+        			video.setVolume(video.getVolume() + 10);
+        		}
         	}
         });
         btnIncreaseVolume.setBounds(654, 538, 89, 23);
