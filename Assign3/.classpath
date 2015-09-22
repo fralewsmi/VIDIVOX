@@ -10,9 +10,5 @@
 	<classpathentry kind="lib" path="/home/fraser/Downloads/vlcj-3.8.0/vlcj-3.8.0-sources.jar"/>
 	<classpathentry kind="lib" path="/home/fraser/Downloads/vlcj-3.8.0/vlcj-3.8.0-tests.jar"/>
 	<classpathentry kind="lib" path="/home/fraser/Downloads/vlcj-3.8.0/vlcj-3.8.0-test-sources.jar"/>
-	<classpathentry kind="lib" path="D:/Downloads/vlcj-3.8.0-dist/jna-3.5.2.jar"/>
-	<classpathentry kind="lib" path="D:/Downloads/vlcj-3.8.0-dist/platform-3.5.2.jar"/>
-	<classpathentry kind="lib" path="D:/Downloads/vlcj-3.8.0-dist/slf4j-api-1.7.10.jar"/>
-	<classpathentry kind="lib" path="D:/Downloads/vlcj-3.8.0-dist/vlcj-3.8.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

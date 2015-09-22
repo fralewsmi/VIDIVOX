@@ -71,7 +71,7 @@ public class MediaPlayer {
         btnFord.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				video.setRate(2);
+				video.skip(5000);
 			}
 		});
         panel.add(btnFord);
