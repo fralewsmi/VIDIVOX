@@ -18,7 +18,7 @@ import com.sun.jna.NativeLibrary;
 
 public class MediaPlayer {
     private final EmbeddedMediaPlayerComponent mediaPlayerComponent;
-
+    
     public static void main(final String[] args) {
     	        
         SwingUtilities.invokeLater(new Runnable() {
@@ -35,6 +35,9 @@ public class MediaPlayer {
         mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
         final EmbeddedMediaPlayer video = mediaPlayerComponent.getMediaPlayer();
         
+        // Initialises the FileChooser to select a video file to play
+        JFileChooser videoChooser = new JFileChooser();
+        
         JPanel panel = new JPanel();
         
         JButton btnMute = new JButton("Mute");
@@ -48,7 +51,7 @@ public class MediaPlayer {
         panel.setLayout(null);
         panel.add(btnMute);
         
-        JButton btnDecreaseVolume = new JButton("-Volume");
+        JButton btnDecreaseVolume = new JButton("-Vol");
         btnDecreaseVolume.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
         		video.setVolume(video.getVolume() - 10);
@@ -58,7 +61,7 @@ public class MediaPlayer {
         panel.add(btnDecreaseVolume);
         
         
-        JButton btnIncreaseVolume = new JButton("+Volume");
+        JButton btnIncreaseVolume = new JButton("+Vol");
         btnIncreaseVolume.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		if (video.getVolume() >= 190) { // Limits the volume to 200 to prevent audio distortion.
@@ -149,8 +152,22 @@ public class MediaPlayer {
         frame.setSize(1050, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+        
+        JButton btnOpen = new JButton("Open");
+        btnOpen.setBounds(753, 538, 89, 23);
+        btnOpen.addActionListener(new ActionListener() {
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		int returnVal = videoChooser.showOpenDialog(panel);
+        		
+        		if (returnVal == JFileChooser.APPROVE_OPTION) {
+        			String videoLocation = videoChooser.getSelectedFile().toString();
+        			mediaPlayerComponent.getMediaPlayer().playMedia(videoLocation);
+        		}
+        	}
+        });
+        panel.add(btnOpen);
 
-        mediaPlayerComponent.getMediaPlayer().playMedia("sample_bigbuckbunny.mp4");
     }
     
     
