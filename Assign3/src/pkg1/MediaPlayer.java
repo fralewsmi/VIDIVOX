@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import uk.co.caprica.vlcj.binding.LibVlc;
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
@@ -31,7 +33,6 @@ public class MediaPlayer {
         JFrame frame = new JFrame("VIDIVOX PROTOTYPE");
         
         mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
-        
         final EmbeddedMediaPlayer video = mediaPlayerComponent.getMediaPlayer();
         
         JPanel panel = new JPanel();
@@ -70,41 +71,6 @@ public class MediaPlayer {
         btnIncreaseVolume.setBounds(654, 538, 89, 23);
         panel.add(btnIncreaseVolume);
 
-        JButton btnFord = new JButton(">>");
-        btnFord.setBounds(371, 538, 75, 23);
-        btnFord.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				video.setRate(2);
-			}
-		});
-        panel.add(btnFord);
-
-        JButton btnBack = new JButton("<<");
-        btnBack.setBounds(139, 538, 75, 23);
-        btnBack.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				video.skip(-5000);
-			}
-		});
-        panel.add(btnBack);
-
-        final JLabel timeLabel = new JLabel("0 seconds");
-        timeLabel.setBounds(10, 538, 111, 23);
-        panel.add(timeLabel);
-        
-        Timer timer = new Timer(200, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-//				System.out.println(video.getTime()+ " seconds");
-				timeLabel.setText((video.getTime()/1000)+ " seconds");
-			}
-		}); 
-        timer.start();
-        
-        frame.setContentPane(panel);
-        
         JButton btnPlaypause = new JButton("Play/Pause");
         btnPlaypause.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
@@ -113,6 +79,64 @@ public class MediaPlayer {
         });
         btnPlaypause.setBounds(231, 538, 128, 23);
         panel.add(btnPlaypause);
+
+        final Timer skipBackTimer = new Timer(100 , new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               video.skip(-300);
+            }
+         });
+         JButton btnBack = new JButton("<<");
+         btnBack.setBounds(139, 538, 75, 23);
+         final ButtonModel backModel = btnBack.getModel();
+         backModel.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent cEvt) {
+               if (backModel.isPressed() && !skipBackTimer.isRunning()) {
+            	   skipBackTimer.start();
+               } else if (!backModel.isPressed() && skipBackTimer.isRunning()) {
+            	   skipBackTimer.stop();
+               }
+            }
+         });
+         panel.add(btnBack);
+        
+        
+        final Timer skipFordTimer = new Timer(100 , new ActionListener() {
+           @Override
+           public void actionPerformed(ActionEvent e) {
+              video.skip(300);
+           }
+        });
+        JButton btnFord = new JButton(">>");
+        btnFord.setBounds(371, 538, 75, 23);
+        final ButtonModel fordModel = btnFord.getModel();
+        fordModel.addChangeListener(new ChangeListener() {
+           @Override
+           public void stateChanged(ChangeEvent cEvt) {
+              if (fordModel.isPressed() && !skipFordTimer.isRunning()) {
+            	  skipFordTimer.start();
+              } else if (!fordModel.isPressed() && skipFordTimer.isRunning()) {
+            	  skipFordTimer.stop();
+              }
+           }
+        });
+        panel.add(btnFord);
+
+        final JLabel timeLabel = new JLabel("0 seconds");
+        timeLabel.setBounds(10, 538, 111, 23);
+        panel.add(timeLabel);
+        
+        Timer timer = new Timer(200, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+			//  System.out.println(video.getTime()+ " seconds");
+				timeLabel.setText((video.getTime()/1000)+ " seconds");
+			}
+		}); 
+        timer.start();
+    
+        frame.setContentPane(panel);
         
         JPanel panel_1 = new JPanel();
         panel_1.setBounds(0, 0, 1034, 527);
@@ -128,5 +152,7 @@ public class MediaPlayer {
 
         mediaPlayerComponent.getMediaPlayer().playMedia("sample_bigbuckbunny.mp4");
     }
+    
+    
 }
  
