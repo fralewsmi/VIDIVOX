@@ -3,6 +3,7 @@ package pkg1;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 
 import javax.swing.*;
@@ -19,8 +20,8 @@ import com.sun.jna.NativeLibrary;
 
 public class MediaPlayer {
 	
-    protected static String videoLocation;
-	private final EmbeddedMediaPlayerComponent mediaPlayerComponent;
+    protected static String videoLocation = "";
+	static EmbeddedMediaPlayerComponent mediaPlayerComponent;
     
     public static void main(final String[] args) {
     	        
@@ -33,6 +34,13 @@ public class MediaPlayer {
     }
 
     private MediaPlayer(String[] args) {
+    	
+    	String [] toDelete = {"convert.mp3", "out.mp4","text.txt", "wave.wav", "out1.mp4"};
+    	for (int i=0; i<toDelete.length; i++) {
+    		File file = new File(toDelete[i]);
+    		file.delete();
+    	}
+    	
         JFrame frame = new JFrame("VIDIVOX PROTOTYPE");
         
         mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
@@ -146,19 +154,19 @@ public class MediaPlayer {
         frame.setContentPane(panel);
         
         JPanel panel_1 = new JPanel();
-        panel_1.setBounds(0, 0, 1034, 527);
+        panel_1.setBounds(0, 0, 1158, 527);
         panel.add(panel_1);
         panel_1.setLayout(new BorderLayout(0, 0));
         panel_1.add(mediaPlayerComponent, BorderLayout.CENTER);
         
         
         frame.setLocation(100, 100);
-        frame.setSize(1050, 600);
+        frame.setSize(1174, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
         
         JButton btnVideo = new JButton("Select Video");
-        btnVideo.setBounds(888, 538, 128, 23);
+        btnVideo.setBounds(888, 538, 125, 23);
         btnVideo.addActionListener(new ActionListener() {
         	@Override
         	public void actionPerformed(ActionEvent e) {
@@ -173,35 +181,58 @@ public class MediaPlayer {
         panel.add(btnVideo);
         
         JButton btnAudio = new JButton("Select Audio");
-        btnAudio.setBounds(753, 538, 123, 23);
+        btnAudio.setBounds(753, 538, 125, 23);
         btnAudio.addActionListener(new ActionListener() {
         	@Override
         	public void actionPerformed(ActionEvent e) {
-        		int returnVal = audioChooser.showOpenDialog(panel);
-        		
-        		if (returnVal == JFileChooser.APPROVE_OPTION) {
-        			String audioLocation = audioChooser.getSelectedFile().toString();
-        			changeAudio(audioLocation);
-        		}
+                if (!videoLocation.equals("")) {
+	        		int returnVal = audioChooser.showOpenDialog(panel);
+	        		if (returnVal == JFileChooser.APPROVE_OPTION) {
+	        			String audioLocation = audioChooser.getSelectedFile().toString();
+	        			changeAudio(audioLocation);
+	        		}
+                }
+                else {
+                	SelectVideoFirst warning = new SelectVideoFirst();
+                	warning.setVisible(true);
+                }
         	}
 
 			private void changeAudio(String audioLocation) {
 				String outputLocation = "out.mp4";
 				String cmd = "ffmpeg -i "+videoLocation+" -i "+audioLocation+" -map 0:v -map 1:a "+outputLocation;
-				ProcessBuilder builderAudio = new ProcessBuilder("/bin/bash", "-c", cmd);		
-				builderAudio.redirectErrorStream(true);
+				ProcessBuilder builderAudio = new ProcessBuilder("/bin/bash", "-c", cmd);
 				try {
 					Process process = builderAudio.start();
+					process.waitFor();
 				} catch (IOException e) {
 					e.printStackTrace();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
-				mediaPlayerComponent.getMediaPlayer().playMedia(outputLocation);
+				videoLocation = outputLocation;
+				mediaPlayerComponent.getMediaPlayer().playMedia(videoLocation);
 			}
         });
+        
         panel.add(btnAudio);
-
+        
+        JButton btnNewButton = new JButton("Add Voice");
+        btnNewButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		if (!videoLocation.equals("")) {
+        			InputText inputText = new InputText();
+        			inputText.setVisible(true);
+        		}
+        		else {
+        			SelectVideoFirst warning = new SelectVideoFirst();
+                	warning.setVisible(true);
+        		}
+        	}
+        });
+        btnNewButton.setBounds(1023, 538, 125, 23);
+        panel.add(btnNewButton);
     }
-    
-    
+
 }
  
