@@ -193,8 +193,7 @@ public class MediaPlayer {
 	        		}
                 }
                 else {
-                	SelectVideoFirst warning = new SelectVideoFirst();
-                	warning.setVisible(true);
+        			JOptionPane.showMessageDialog(panel, "Please select a video file first!", "Warning: No video selected", JOptionPane.WARNING_MESSAGE);
                 }
         	}
 
@@ -225,8 +224,7 @@ public class MediaPlayer {
         			inputText.setVisible(true);
         		}
         		else {
-        			SelectVideoFirst warning = new SelectVideoFirst();
-                	warning.setVisible(true);
+        			JOptionPane.showMessageDialog(panel, "Please select a video file first!", "Warning: No video selected", JOptionPane.WARNING_MESSAGE);
         		}
         	}
         });
