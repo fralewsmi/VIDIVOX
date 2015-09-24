@@ -3,6 +3,8 @@ package pkg1;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -17,8 +19,10 @@ import com.sun.jna.Native;
 import com.sun.jna.NativeLibrary;
 
 public class MediaPlayer {
-    private final EmbeddedMediaPlayerComponent mediaPlayerComponent;
-
+	
+    protected static String videoLocation = "";
+	static EmbeddedMediaPlayerComponent mediaPlayerComponent;
+    
     public static void main(final String[] args) {
     	        
         SwingUtilities.invokeLater(new Runnable() {
@@ -30,10 +34,21 @@ public class MediaPlayer {
     }
 
     private MediaPlayer(String[] args) {
+    	
+    	String [] toDelete = {"convert.mp3", "out.mp4","text.txt", "wave.wav", "out1.mp4"};
+    	for (int i=0; i<toDelete.length; i++) {
+    		File file = new File(toDelete[i]);
+    		file.delete();
+    	}
+    	
         JFrame frame = new JFrame("VIDIVOX PROTOTYPE");
         
         mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
         final EmbeddedMediaPlayer video = mediaPlayerComponent.getMediaPlayer();
+        
+        // Initialises the FileChoosers to select the video and audio files to play
+        JFileChooser videoChooser = new JFileChooser();
+        JFileChooser audioChooser = new JFileChooser();
         
         JPanel panel = new JPanel();
         
@@ -48,7 +63,7 @@ public class MediaPlayer {
         panel.setLayout(null);
         panel.add(btnMute);
         
-        JButton btnDecreaseVolume = new JButton("-Volume");
+        JButton btnDecreaseVolume = new JButton("-Vol");
         btnDecreaseVolume.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
         		video.setVolume(video.getVolume() - 10);
@@ -58,7 +73,7 @@ public class MediaPlayer {
         panel.add(btnDecreaseVolume);
         
         
-        JButton btnIncreaseVolume = new JButton("+Volume");
+        JButton btnIncreaseVolume = new JButton("+Vol");
         btnIncreaseVolume.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		if (video.getVolume() >= 190) { // Limits the volume to 200 to prevent audio distortion.
@@ -139,20 +154,83 @@ public class MediaPlayer {
         frame.setContentPane(panel);
         
         JPanel panel_1 = new JPanel();
-        panel_1.setBounds(0, 0, 1034, 527);
+        panel_1.setBounds(0, 0, 1158, 527);
         panel.add(panel_1);
         panel_1.setLayout(new BorderLayout(0, 0));
         panel_1.add(mediaPlayerComponent, BorderLayout.CENTER);
         
         
         frame.setLocation(100, 100);
-        frame.setSize(1050, 600);
+        frame.setSize(1174, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+        
+        JButton btnVideo = new JButton("Select Video");
+        btnVideo.setBounds(888, 538, 125, 23);
+        btnVideo.addActionListener(new ActionListener() {
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		int returnVal = videoChooser.showOpenDialog(panel);
+        		
+        		if (returnVal == JFileChooser.APPROVE_OPTION) {
+        			videoLocation = videoChooser.getSelectedFile().toString();
+        			mediaPlayerComponent.getMediaPlayer().playMedia(videoLocation);
+        		}
+        	}
+        });
+        panel.add(btnVideo);
+        
+        JButton btnAudio = new JButton("Select Audio");
+        btnAudio.setBounds(753, 538, 125, 23);
+        btnAudio.addActionListener(new ActionListener() {
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+                if (!videoLocation.equals("")) {
+	        		int returnVal = audioChooser.showOpenDialog(panel);
+	        		if (returnVal == JFileChooser.APPROVE_OPTION) {
+	        			String audioLocation = audioChooser.getSelectedFile().toString();
+	        			changeAudio(audioLocation);
+	        		}
+                }
+                else {
+        			JOptionPane.showMessageDialog(panel, "Please select a video file first!", "Warning: No video selected", JOptionPane.WARNING_MESSAGE);
+                }
+        	}
 
-        mediaPlayerComponent.getMediaPlayer().playMedia("sample_bigbuckbunny.mp4");
+			private void changeAudio(String audioLocation) {
+				String outputLocation = "out.mp4";
+				String cmd = "ffmpeg -i "+videoLocation+" -i "+audioLocation+" -map 0:v -map 1:a "+outputLocation;
+				ProcessBuilder builderAudio = new ProcessBuilder("/bin/bash", "-c", cmd);
+				try {
+					Process process = builderAudio.start();
+					process.waitFor();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				videoLocation = outputLocation;
+				mediaPlayerComponent.getMediaPlayer().playMedia(videoLocation);
+			}
+        });
+        
+        panel.add(btnAudio);
+        
+        JButton btnNewButton = new JButton("Add Voice");
+        btnNewButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		if (!videoLocation.equals("")) {
+        			InputText inputText = new InputText();
+        			inputText.setVisible(true);
+        		}
+        		else {
+        			JOptionPane.showMessageDialog(panel, "Please select a video file first!", "Warning: No video selected", JOptionPane.WARNING_MESSAGE);
+        		}
+        	}
+        });
+        btnNewButton.setBounds(1023, 538, 125, 23);
+        panel.add(btnNewButton);
     }
-    
-    
+
 }
  

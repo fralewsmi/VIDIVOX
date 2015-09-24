@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete resource &apos;206_Java_IO&apos;" deleteContents="false" description="Delete resource &apos;206_Java_IO&apos;" element1="/206_Java_IO" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1443049559568"/>
+</session>
