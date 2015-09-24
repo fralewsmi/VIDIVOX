@@ -3,6 +3,7 @@ package pkg1;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -17,7 +18,9 @@ import com.sun.jna.Native;
 import com.sun.jna.NativeLibrary;
 
 public class MediaPlayer {
-    private final EmbeddedMediaPlayerComponent mediaPlayerComponent;
+	
+    protected static String videoLocation;
+	private final EmbeddedMediaPlayerComponent mediaPlayerComponent;
     
     public static void main(final String[] args) {
     	        
@@ -35,8 +38,9 @@ public class MediaPlayer {
         mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
         final EmbeddedMediaPlayer video = mediaPlayerComponent.getMediaPlayer();
         
-        // Initialises the FileChooser to select a video file to play
+        // Initialises the FileChoosers to select the video and audio files to play
         JFileChooser videoChooser = new JFileChooser();
+        JFileChooser audioChooser = new JFileChooser();
         
         JPanel panel = new JPanel();
         
@@ -153,20 +157,48 @@ public class MediaPlayer {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
         
-        JButton btnOpen = new JButton("Open");
-        btnOpen.setBounds(753, 538, 89, 23);
-        btnOpen.addActionListener(new ActionListener() {
+        JButton btnVideo = new JButton("Select Video");
+        btnVideo.setBounds(888, 538, 128, 23);
+        btnVideo.addActionListener(new ActionListener() {
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		int returnVal = videoChooser.showOpenDialog(panel);
         		
         		if (returnVal == JFileChooser.APPROVE_OPTION) {
-        			String videoLocation = videoChooser.getSelectedFile().toString();
+        			videoLocation = videoChooser.getSelectedFile().toString();
         			mediaPlayerComponent.getMediaPlayer().playMedia(videoLocation);
         		}
         	}
         });
-        panel.add(btnOpen);
+        panel.add(btnVideo);
+        
+        JButton btnAudio = new JButton("Select Audio");
+        btnAudio.setBounds(753, 538, 123, 23);
+        btnAudio.addActionListener(new ActionListener() {
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		int returnVal = audioChooser.showOpenDialog(panel);
+        		
+        		if (returnVal == JFileChooser.APPROVE_OPTION) {
+        			String audioLocation = audioChooser.getSelectedFile().toString();
+        			changeAudio(audioLocation);
+        		}
+        	}
+
+			private void changeAudio(String audioLocation) {
+				String outputLocation = "out.mp4";
+				String cmd = "ffmpeg -i "+videoLocation+" -i "+audioLocation+" -map 0:v -map 1:a "+outputLocation;
+				ProcessBuilder builderAudio = new ProcessBuilder("/bin/bash", "-c", cmd);		
+				builderAudio.redirectErrorStream(true);
+				try {
+					Process process = builderAudio.start();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				mediaPlayerComponent.getMediaPlayer().playMedia(outputLocation);
+			}
+        });
+        panel.add(btnAudio);
 
     }
     
