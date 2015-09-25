@@ -14,6 +14,7 @@ import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
 
@@ -80,14 +81,18 @@ public class InputText extends JFrame {
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String input = textArea.getText();
-				String cmd = "echo "+input+" > text.txt";
+				File file = new File(".text.txt");
+	    		file.delete();
+				String cmd = "echo "+input+" > .text.txt";
 				ProcessBuilder builderText = new ProcessBuilder("/bin/bash", "-c", cmd);		
 				try {
 					Process process = builderText.start();
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
-				cmd = "text2wave -o wave.wav text.txt";
+				file = new File(".wave.wav");
+	    		file.delete();
+				cmd = "text2wave -o .wave.wav .text.txt";
 				ProcessBuilder builderWave = new ProcessBuilder("/bin/bash", "-c", cmd);		
 				try {
 					Process process = builderWave.start();
@@ -124,20 +129,24 @@ public class InputText extends JFrame {
 	
 	public class BackgroundTask extends SwingWorker<Void,Void> {
 
-		String outputLocation = "out1.mp4";
+		String outputLocation = ".out1.mp4";
 
 		@Override
 		protected Void doInBackground() throws Exception {
 			try {
 				String input = textArea.getText();
-				String cmd = "echo "+input+" > text.txt";
+				File file = new File(".text.txt");
+	    		file.delete();
+				String cmd = "echo "+input+" > .text.txt";
 				ProcessBuilder builderText = new ProcessBuilder("/bin/bash", "-c", cmd);		
 				try {
 					Process process = builderText.start();
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
-				cmd = "text2wave -o wave.wav text.txt";
+				file = new File(".wave.wav");
+	    		file.delete();
+				cmd = "text2wave -o .wave.wav .text.txt";
 				ProcessBuilder builderWave = new ProcessBuilder("/bin/bash", "-c", cmd);		
 				try {
 					Process process = builderWave.start();
@@ -145,7 +154,7 @@ public class InputText extends JFrame {
 				} catch (IOException | InterruptedException e1) {
 					e1.printStackTrace();
 				}
-				cmd = "ffmpeg -i wave.wav -codec:a libmp3lame -qscale:a 2 convert.mp3";
+				cmd = "ffmpeg -y -i .wave.wav -codec:a libmp3lame -qscale:a 2 .convert.mp3";
 				ProcessBuilder builderConvert = new ProcessBuilder("/bin/bash", "-c", cmd);		
 				try {
 					Process process = builderConvert.start();
@@ -153,7 +162,7 @@ public class InputText extends JFrame {
 				} catch (IOException | InterruptedException e1) {
 					e1.printStackTrace();
 				}
-				cmd = "ffmpeg -i "+MediaPlayer.videoLocation+" -i convert.mp3 -filter_complex amix=inputs=2 "+outputLocation;
+				cmd = "ffmpeg -y -i "+MediaPlayer.videoLocation+" -i .convert.mp3 -filter_complex amix=inputs=2 "+outputLocation;
 				ProcessBuilder builderAdd = new ProcessBuilder("/bin/bash", "-c", cmd);		
 				try {
 					Process process = builderAdd.start();
