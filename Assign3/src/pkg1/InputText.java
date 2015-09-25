@@ -8,6 +8,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingWorker;
+
 import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
@@ -18,6 +20,8 @@ import java.awt.event.ActionEvent;
 public class InputText extends JFrame {
 
 	private JPanel contentPane;
+	private JLabel lblNewLabel = new JLabel("Enter Text-To-Speech");
+	private JTextArea textArea = new JTextArea();
 
 	/**
 	 * Launch the application.
@@ -46,13 +50,11 @@ public class InputText extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Enter Text-To-Speech");
 		lblNewLabel.setBounds(5, 5, 553, 39);
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 32));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		contentPane.add(lblNewLabel);
 		
-		JTextArea textArea = new JTextArea();
 		textArea.setBounds(5, 44, 553, 189);
 		contentPane.add(textArea);
 		
@@ -102,6 +104,31 @@ public class InputText extends JFrame {
 		JButton btnNewButton_2 = new JButton("Add To Video");
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				BackgroundTask backTask = new BackgroundTask();
+				backTask.execute();
+			}
+		});
+		btnNewButton_2.setBounds(297, 233, 132, 23);
+		contentPane.add(btnNewButton_2);
+		
+		JButton btnNewButton_3 = new JButton("Close");
+		btnNewButton_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+			}
+		});
+		btnNewButton_3.setBounds(441, 232, 117, 25);
+		contentPane.add(btnNewButton_3);
+	}
+	
+	public class BackgroundTask extends SwingWorker<Void,Void> {
+
+		String outputLocation = "out1.mp4";
+
+		@Override
+		protected Void doInBackground() throws Exception {
+			try {
 				String input = textArea.getText();
 				String cmd = "echo "+input+" > text.txt";
 				ProcessBuilder builderText = new ProcessBuilder("/bin/bash", "-c", cmd);		
@@ -126,7 +153,6 @@ public class InputText extends JFrame {
 				} catch (IOException | InterruptedException e1) {
 					e1.printStackTrace();
 				}
-				String outputLocation = "out1.mp4";
 				cmd = "ffmpeg -i "+MediaPlayer.videoLocation+" -i convert.mp3 -filter_complex amix=inputs=2 "+outputLocation;
 				ProcessBuilder builderAdd = new ProcessBuilder("/bin/bash", "-c", cmd);		
 				try {
@@ -135,20 +161,16 @@ public class InputText extends JFrame {
 				} catch (IOException | InterruptedException e1) {
 					e1.printStackTrace();
 				}
-				setVisible(false);
-				MediaPlayer.mediaPlayerComponent.getMediaPlayer().playMedia(outputLocation);
+			} catch(Exception e) {
+				e.printStackTrace();
 			}
-		});
-		btnNewButton_2.setBounds(297, 233, 132, 23);
-		contentPane.add(btnNewButton_2);
+			return null;
+		}
 		
-		JButton btnNewButton_3 = new JButton("Close");
-		btnNewButton_3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
-			}
-		});
-		btnNewButton_3.setBounds(441, 232, 117, 25);
-		contentPane.add(btnNewButton_3);
+		protected void done() {
+			setVisible(false);
+			MediaPlayer.mediaPlayerComponent.getMediaPlayer().playMedia(outputLocation);
+		}
+		
 	}
 }
