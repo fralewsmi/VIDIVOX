@@ -34,14 +34,19 @@ public class MediaPlayer {
     }
 
     private MediaPlayer(String[] args) {
-    	
+
     	String [] toDelete = {"convert.mp3", "out.mp4","text.txt", "wave.wav", "out1.mp4"};
     	for (int i=0; i<toDelete.length; i++) {
     		File file = new File(toDelete[i]);
     		file.delete();
     	}
     	
+    	// Creates frame for VIDIVOX player prototype
         JFrame frame = new JFrame("VIDIVOX PROTOTYPE");
+        frame.setLocation(100, 100);
+        frame.setSize(1174, 600);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
         
         mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
         final EmbeddedMediaPlayer video = mediaPlayerComponent.getMediaPlayer();
@@ -50,30 +55,78 @@ public class MediaPlayer {
         JFileChooser videoChooser = new JFileChooser();
         JFileChooser audioChooser = new JFileChooser();
         
+        // Creates panel which contains the video panel and the buttons for the player controls
         JPanel panel = new JPanel();
+        panel.setLayout(null);        
+        frame.setContentPane(panel);
+
+        // Creates panel for the video to play
+        JPanel videoPanel = new JPanel();
+        videoPanel.setBounds(0, 0, 1158, 527);
+        panel.add(videoPanel);
+        videoPanel.setLayout(new BorderLayout(0, 0));
+        videoPanel.add(mediaPlayerComponent, BorderLayout.CENTER);
         
-        JButton btnMute = new JButton("Mute");
+        // Initialises and adds time label to show the current time of the video file
+        final JLabel timeLabel = new JLabel("0 seconds");
+        timeLabel.setBounds(10, 538, 111, 23);
+        panel.add(timeLabel);
+        
+        // Initialises Volume Control buttons
+        JButton btnMute = new JButton("Mute"); // Mute the sound
+        JButton btnDecreaseVolume = new JButton("-Vol"); // Decrease the sound
+        JButton btnIncreaseVolume = new JButton("+Vol"); // Increase the sound
+        
+        // Initialises playback control buttons
+        JButton btnPlaypause = new JButton("Play/Pause"); // Pause or
+        JButton btnBack = new JButton("<<"); // Rewind
+        JButton btnFord = new JButton(">>"); // Fast-Forward
+
+        // Initialises other buttons to select video, audio and add synthetic speech
+        JButton btnVideo = new JButton("Select Video");
+        JButton btnAudio = new JButton("Select Audio");
+        JButton btnVoice = new JButton("Add Voice");
+
+        // Sets the location of each of the buttons
         btnMute.setBounds(458, 538, 88, 23);
+        btnDecreaseVolume.setBounds(556, 538, 88, 23);
+        btnIncreaseVolume.setBounds(654, 538, 89, 23);
+        
+        btnPlaypause.setBounds(231, 538, 128, 23);
+        btnBack.setBounds(139, 538, 75, 23);
+        btnFord.setBounds(371, 538, 75, 23);
+
+        btnVideo.setBounds(888, 538, 125, 23);
+        btnAudio.setBounds(753, 538, 125, 23);
+        btnVoice.setBounds(1023, 538, 125, 23);
+
+        // Adds all the buttons to the button panel
+        panel.add(btnMute);
+        panel.add(btnDecreaseVolume);
+        panel.add(btnIncreaseVolume);
+        
+        panel.add(btnPlaypause);
+        panel.add(btnBack);
+        panel.add(btnFord);
+        
+        panel.add(btnVideo);
+        panel.add(btnAudio);
+        panel.add(btnVoice);
+
+
         btnMute.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				video.mute();
 			}
 		});
-        panel.setLayout(null);
-        panel.add(btnMute);
         
-        JButton btnDecreaseVolume = new JButton("-Vol");
         btnDecreaseVolume.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
         		video.setVolume(video.getVolume() - 10);
         	}
         });
-        btnDecreaseVolume.setBounds(556, 538, 88, 23);
-        panel.add(btnDecreaseVolume);
         
-        
-        JButton btnIncreaseVolume = new JButton("+Vol");
         btnIncreaseVolume.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		if (video.getVolume() >= 190) { // Limits the volume to 200 to prevent audio distortion.
@@ -83,17 +136,12 @@ public class MediaPlayer {
         		}
         	}
         });
-        btnIncreaseVolume.setBounds(654, 538, 89, 23);
-        panel.add(btnIncreaseVolume);
-
-        JButton btnPlaypause = new JButton("Play/Pause");
+        
         btnPlaypause.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		video.pause();
         	}
         });
-        btnPlaypause.setBounds(231, 538, 128, 23);
-        panel.add(btnPlaypause);
 
         final Timer skipBackTimer = new Timer(100 , new ActionListener() {
             @Override
@@ -101,8 +149,6 @@ public class MediaPlayer {
                video.skip(-300);
             }
          });
-         JButton btnBack = new JButton("<<");
-         btnBack.setBounds(139, 538, 75, 23);
          final ButtonModel backModel = btnBack.getModel();
          backModel.addChangeListener(new ChangeListener() {
             @Override
@@ -114,8 +160,6 @@ public class MediaPlayer {
                }
             }
          });
-         panel.add(btnBack);
-        
         
         final Timer skipFordTimer = new Timer(100 , new ActionListener() {
            @Override
@@ -123,8 +167,6 @@ public class MediaPlayer {
               video.skip(300);
            }
         });
-        JButton btnFord = new JButton(">>");
-        btnFord.setBounds(371, 538, 75, 23);
         final ButtonModel fordModel = btnFord.getModel();
         fordModel.addChangeListener(new ChangeListener() {
            @Override
@@ -136,37 +178,15 @@ public class MediaPlayer {
               }
            }
         });
-        panel.add(btnFord);
-
-        final JLabel timeLabel = new JLabel("0 seconds");
-        timeLabel.setBounds(10, 538, 111, 23);
-        panel.add(timeLabel);
         
         Timer timer = new Timer(200, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-			//  System.out.println(video.getTime()+ " seconds");
 				timeLabel.setText((video.getTime()/1000)+ " seconds");
 			}
 		}); 
         timer.start();
     
-        frame.setContentPane(panel);
-        
-        JPanel panel_1 = new JPanel();
-        panel_1.setBounds(0, 0, 1158, 527);
-        panel.add(panel_1);
-        panel_1.setLayout(new BorderLayout(0, 0));
-        panel_1.add(mediaPlayerComponent, BorderLayout.CENTER);
-        
-        
-        frame.setLocation(100, 100);
-        frame.setSize(1174, 600);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-        
-        JButton btnVideo = new JButton("Select Video");
-        btnVideo.setBounds(888, 538, 125, 23);
         btnVideo.addActionListener(new ActionListener() {
         	@Override
         	public void actionPerformed(ActionEvent e) {
@@ -178,10 +198,7 @@ public class MediaPlayer {
         		}
         	}
         });
-        panel.add(btnVideo);
         
-        JButton btnAudio = new JButton("Select Audio");
-        btnAudio.setBounds(753, 538, 125, 23);
         btnAudio.addActionListener(new ActionListener() {
         	@Override
         	public void actionPerformed(ActionEvent e) {
@@ -191,8 +208,7 @@ public class MediaPlayer {
 	        			String audioLocation = audioChooser.getSelectedFile().toString();
 	        			changeAudio(audioLocation);
 	        		}
-                }
-                else {
+                } else {
         			JOptionPane.showMessageDialog(panel, "Please select a video file first!", "Warning: No video selected", JOptionPane.WARNING_MESSAGE);
                 }
         	}
@@ -214,23 +230,17 @@ public class MediaPlayer {
 			}
         });
         
-        panel.add(btnAudio);
-        
-        JButton btnNewButton = new JButton("Add Voice");
-        btnNewButton.addActionListener(new ActionListener() {
+        btnVoice.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		if (!videoLocation.equals("")) {
         			InputText inputText = new InputText();
         			inputText.setVisible(true);
-        		}
-        		else {
+        		} else {
         			JOptionPane.showMessageDialog(panel, "Please select a video file first!", "Warning: No video selected", JOptionPane.WARNING_MESSAGE);
         		}
         	}
         });
-        btnNewButton.setBounds(1023, 538, 125, 23);
-        panel.add(btnNewButton);
     }
 
 }
- 
+  
