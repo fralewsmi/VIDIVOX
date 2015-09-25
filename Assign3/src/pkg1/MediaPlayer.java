@@ -34,12 +34,6 @@ public class MediaPlayer {
     }
 
     private MediaPlayer(String[] args) {
-
-    	String [] toDelete = {"convert.mp3", "out.mp4","text.txt", "wave.wav", "out1.mp4"};
-    	for (int i=0; i<toDelete.length; i++) {
-    		File file = new File(toDelete[i]);
-    		file.delete();
-    	}
     	
     	// Creates frame for VIDIVOX player prototype
         JFrame frame = new JFrame("VIDIVOX PROTOTYPE");
@@ -211,8 +205,8 @@ public class MediaPlayer {
         	}
 
 			private void changeAudio(String audioLocation) {
-				String outputLocation = "out.mp4";
-				String cmd = "ffmpeg -i "+videoLocation+" -i "+audioLocation+" -map 0:v -map 1:a "+outputLocation;
+				String outputLocation = ".out.mp4";
+				String cmd = "ffmpeg -y -i "+videoLocation+" -i "+audioLocation+" -map 0:v -map 1:a "+outputLocation;
 				ProcessBuilder builderAudio = new ProcessBuilder("/bin/bash", "-c", cmd);
 				try {
 					Process process = builderAudio.start();

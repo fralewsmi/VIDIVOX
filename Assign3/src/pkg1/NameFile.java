@@ -62,7 +62,7 @@ public class NameFile extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String fileName = textField.getText();
-				String cmd = "ffmpeg -i wave.wav -codec:a libmp3lame -qscale:a 2 "+fileName+".mp3";
+				String cmd = "ffmpeg -y -i .wave.wav -codec:a libmp3lame -qscale:a 2 "+fileName+".mp3";
 				ProcessBuilder builderWave = new ProcessBuilder("/bin/bash", "-c", cmd);		
 				try {
 					Process process = builderWave.start();
