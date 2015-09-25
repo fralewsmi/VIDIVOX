@@ -143,6 +143,9 @@ public class MediaPlayer {
         	}
         });
 
+	// A timer was used with a Change Listener to implement the continuous fast forward and backward buttons.
+	// While the button is pressed, the video will skip every 100ms with the timer.
+	// Design implementation obtained from Stack Overflow on the following page: http://stackoverflow.com/questions/12225052
         final Timer skipBackTimer = new Timer(100 , new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -152,7 +155,7 @@ public class MediaPlayer {
          final ButtonModel backModel = btnBack.getModel();
          backModel.addChangeListener(new ChangeListener() {
             @Override
-            public void stateChanged(ChangeEvent cEvt) {
+            public void stateChanged(ChangeEvent chgeEvent) {
                if (backModel.isPressed() && !skipBackTimer.isRunning()) {
             	   skipBackTimer.start();
                } else if (!backModel.isPressed() && skipBackTimer.isRunning()) {
@@ -164,7 +167,7 @@ public class MediaPlayer {
          final ButtonModel fordModel = btnFord.getModel();
          fordModel.addChangeListener(new ChangeListener() {
            @Override
-           public void stateChanged(ChangeEvent cEvt) {
+           public void stateChanged(ChangeEvent chgeEvent) {
               if (fordModel.isPressed()) {
             	  video.setRate(2);
               } else if (!fordModel.isPressed()) {
