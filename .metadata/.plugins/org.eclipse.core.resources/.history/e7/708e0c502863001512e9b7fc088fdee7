@@ -146,7 +146,7 @@ public class MediaPlayer {
         final Timer skipBackTimer = new Timer(100 , new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               video.skip(-200);
+               video.skip(-300);
             }
          });
          final ButtonModel backModel = btnBack.getModel();

@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="/home/fraser/Downloads/vlcj-3.8.0/vlcj-3.8.0-sources.jar"/>
 	<classpathentry kind="lib" path="/home/fraser/Downloads/vlcj-3.8.0/vlcj-3.8.0-tests.jar"/>
 	<classpathentry kind="lib" path="/home/fraser/Downloads/vlcj-3.8.0/vlcj-3.8.0-test-sources.jar"/>
+	<classpathentry kind="lib" path="/home/fraser/workspace/se206-Assign3/Assign3/src/pkg1"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

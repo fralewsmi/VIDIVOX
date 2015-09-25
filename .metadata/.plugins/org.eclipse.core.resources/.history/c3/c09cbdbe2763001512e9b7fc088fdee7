@@ -146,7 +146,7 @@ public class MediaPlayer {
         final Timer skipBackTimer = new Timer(100 , new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               video.skip(-200);
+               video.skip(-300);
             }
          });
          final ButtonModel backModel = btnBack.getModel();
@@ -160,15 +160,21 @@ public class MediaPlayer {
                }
             }
          });
-
-         final ButtonModel fordModel = btnFord.getModel();
-         fordModel.addChangeListener(new ChangeListener() {
+        
+        final Timer skipFordTimer = new Timer(100 , new ActionListener() {
+           @Override
+           public void actionPerformed(ActionEvent e) {
+              video.skip(400);
+           }
+        });
+        final ButtonModel fordModel = btnFord.getModel();
+        fordModel.addChangeListener(new ChangeListener() {
            @Override
            public void stateChanged(ChangeEvent cEvt) {
-              if (fordModel.isPressed()) {
-            	  video.setRate(2);
-              } else if (!fordModel.isPressed()) {
-            	  video.setRate(1);
+              if (fordModel.isPressed() && !skipFordTimer.isRunning()) {
+            	  skipFordTimer.start();
+              } else if (!fordModel.isPressed() && skipFordTimer.isRunning()) {
+            	  skipFordTimer.stop();
               }
            }
         });
