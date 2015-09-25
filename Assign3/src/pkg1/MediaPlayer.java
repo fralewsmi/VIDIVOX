@@ -78,14 +78,14 @@ public class MediaPlayer {
         JButton btnIncreaseVolume = new JButton("+Vol"); // Increase the sound
         
         // Initialises playback control buttons
-        JButton btnPlaypause = new JButton("Play/Pause"); // Pause or
+        JButton btnPlaypause = new JButton("Play/Pause"); // Play or Pause
         JButton btnBack = new JButton("<<"); // Rewind
         JButton btnFord = new JButton(">>"); // Fast-Forward
 
         // Initialises other buttons to select video, audio and add synthetic speech
-        JButton btnVideo = new JButton("Select Video");
-        JButton btnAudio = new JButton("Select Audio");
-        JButton btnVoice = new JButton("Add Voice");
+        JButton btnVideo = new JButton("Select Video"); // Choose a video file to play
+        JButton btnAudio = new JButton("Select Audio"); // Choose and audio file to play
+        JButton btnVoice = new JButton("Add Voice"); // Add synthetic speech to the video
 
         // Sets the location of each of the buttons
         btnMute.setBounds(458, 538, 88, 23);
