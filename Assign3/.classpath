@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
+	<classpathentry excluding="pkg1/" kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="lib" path="/home/fraser/Downloads/vlcj-3.8.0/jna-3.5.2.jar"/>
 	<classpathentry kind="lib" path="/home/fraser/Downloads/vlcj-3.8.0/platform-3.5.2.jar"/>
@@ -10,6 +10,6 @@
 	<classpathentry kind="lib" path="/home/fraser/Downloads/vlcj-3.8.0/vlcj-3.8.0-sources.jar"/>
 	<classpathentry kind="lib" path="/home/fraser/Downloads/vlcj-3.8.0/vlcj-3.8.0-tests.jar"/>
 	<classpathentry kind="lib" path="/home/fraser/Downloads/vlcj-3.8.0/vlcj-3.8.0-test-sources.jar"/>
-	<classpathentry kind="lib" path="/home/fraser/workspace/se206-Assign3/Assign3/src/pkg1"/>
+	<classpathentry kind="lib" path="src/pkg1" sourcepath="src/pkg1"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
