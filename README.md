@@ -1,4 +1,4 @@
-# se206-Assign3
+# VIDIVOX Prototype
 
 ------------------------------------------------
       VIDIVOX Prototype, a trailer editor
