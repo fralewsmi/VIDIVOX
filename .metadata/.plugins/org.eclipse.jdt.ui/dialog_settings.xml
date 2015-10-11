@@ -1,9 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<item value="/home/fraser/Downloads/vlcj-3.8.0" key="org.eclipse.jdt.ui.lastextjar"/>
+	<item value="false" key="SortMembers.sort_all"/>
 	<section name="RefactoringWizard.preview">
 		<item value="600" key="width"/>
 		<item value="400" key="height"/>
+	</section>
+	<section name="org.eclipse.ltk.ui.refactoring.settings">
+		<item value="false" key="renameSubpackages"/>
+		<item value="false" key="updateQualifiedNames"/>
+		<item value="*" key="patterns"/>
+		<item value="false" key="updateTextualMatches"/>
+	</section>
+	<section name="FatJarPackageWizard">
+		<item value="/home/fraser/workspace/VIDIVOX" key="FatJarPackageWizardPage.ANTSCRIPT_LOCATION"/>
+		<item value="MediaPlayer (1) - Project" key="FatJarPackageWizardPage.LAUNCH_CONFIGURATION_SELECTION_NAME"/>
+		<item value="/home/fraser/Desktop/VIDEVOX.jar" key="FatJarPackageWizardPage.DESTINATION_PATH_SELECTION"/>
+		<item value="false" key="FatJarPackageWizardPage.ANTSCRIPT_SAVE"/>
+		<item value="2" key="FatJarPackageWizardPage.LIBRARY_HANDLING"/>
+		<list key="FatJarPackageWizardPage.DESTINATION_NAMES_ID">
+			<item value="/home/fraser/Desktop/VIDEVOX.jar"/>
+		</list>
+		<list key="FatJarPackageWizardPage.ANTSCRIPT_LOCATION_HISTORY">
+			<item value="/home/fraser/workspace/VIDIVOX.xml"/>
+			<item value=".xml"/>
+		</list>
 	</section>
 	<section name="org.eclipse.jdt.internal.ui.packageview.PackageExplorerPart">
 		<item value="2" key="layout"/>
@@ -15,10 +36,17 @@
 	<section name="ClasspathContainerSelectionPage">
 		<item value="0" key="index"/>
 	</section>
+	<section name="OptionalMessageDialog.hide.">
+		<item value="false" key="SortMembersMessageDialog.optionalDialog.id"/>
+		<item value="false" key="RunnableJar.export.ipwarning"/>
+	</section>
 	<section name="quick_assist_proposal_size">
 	</section>
 	<section name="BuildPathsPropertyPage">
-		<item value="2" key="pageIndex"/>
+		<item value="3" key="pageIndex"/>
+	</section>
+	<section name="NewPackageWizardPage">
+		<item value="false" key="create_package_info_java"/>
 	</section>
 	<section name="completion_proposal_size">
 	</section>

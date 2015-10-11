@@ -1,0 +1,248 @@
+
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+import uk.co.caprica.vlcj.binding.LibVlc;
+import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
+import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
+import uk.co.caprica.vlcj.runtime.RuntimeUtil;
+
+import com.sun.jna.Native;
+import com.sun.jna.NativeLibrary;
+
+public class MediaPlayer {
+
+	protected static String videoLocation = "";
+	static EmbeddedMediaPlayerComponent mediaPlayerComponent;
+
+	public static void main(final String[] args) {
+
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				new MediaPlayer(args);
+			}
+		});
+	}
+
+	private MediaPlayer(String[] args) {
+
+		// Creates frame for VIDIVOX player prototype
+		JFrame frame = new JFrame("VIDIVOX PROTOTYPE");
+		frame.setLocation(100, 100);
+		frame.setSize(1174, 600);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+
+		// Initialize the video player
+		mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
+		final EmbeddedMediaPlayer video = mediaPlayerComponent.getMediaPlayer();
+
+		// Initialize the file choosers
+		JFileChooser videoChooser = new JFileChooser();
+		JFileChooser audioChooser = new JFileChooser();
+
+		// Initialize the menu bar
+		JMenuBar menuBar = new JMenuBar();
+		frame.setJMenuBar(menuBar);
+		
+		JMenu mnFile = new JMenu("File");
+		menuBar.add(mnFile);
+
+		JMenuItem mntmOpenVideo = new JMenuItem("Open Video");
+		mntmOpenVideo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int returnVal = videoChooser.showOpenDialog(frame);
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					videoLocation = videoChooser.getSelectedFile().toString();
+					mediaPlayerComponent.getMediaPlayer().playMedia(videoLocation);
+				}
+			}
+		});
+		mnFile.add(mntmOpenVideo);
+
+		JMenuItem mntmOpenAudio = new JMenuItem("Open Audio");
+		mntmOpenAudio.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (!videoLocation.equals("")) {
+					int returnVal = audioChooser.showOpenDialog(frame);
+					if (returnVal == JFileChooser.APPROVE_OPTION) {
+						String audioLocation = audioChooser.getSelectedFile().toString();
+						changeAudio(audioLocation);
+					}
+				} else {
+					JOptionPane.showMessageDialog(frame, "Please select a video file first!",
+							"Warning: No video selected", JOptionPane.WARNING_MESSAGE);
+				}
+			}
+
+			private void changeAudio(String audioLocation) {
+				String outputLocation = ".out.mp4";
+				String cmd = "ffmpeg -y -i " + videoLocation + " -i " + audioLocation + " -map 0:v -map 1:a "
+						+ outputLocation;
+				ProcessBuilder builderAudio = new ProcessBuilder("/bin/bash", "-c", cmd);
+				try {
+					Process process = builderAudio.start();
+					process.waitFor();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				videoLocation = outputLocation;
+				mediaPlayerComponent.getMediaPlayer().playMedia(videoLocation);
+			}
+		});
+		mnFile.add(mntmOpenAudio);
+
+		JMenuItem mntmAddVoice = new JMenuItem("Add Voice");
+		mntmAddVoice.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (!videoLocation.equals("")) {
+					InputText inputText = new InputText();
+					inputText.setVisible(true);
+				} else {
+					JOptionPane.showMessageDialog(frame, "Please select a video file first!",
+							"Warning: No video selected", JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		});
+		mnFile.add(mntmAddVoice);
+
+		JMenuItem mntmHelp = new JMenuItem("Help");
+		mntmHelp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Help help = new Help();
+				help.setVisible(true);
+			}
+		});
+		mnFile.add(mntmHelp);
+
+		// Creates panel which contains the video panel and the buttons for the
+		// player controls
+		JPanel panel = new JPanel();
+		panel.setLayout(null);
+		frame.setContentPane(panel);
+
+		// Creates panel for the video to play
+		JPanel videoPanel = new JPanel();
+		videoPanel.setBounds(0, 0, 1158, 511);
+		panel.add(videoPanel);
+		videoPanel.setLayout(new BorderLayout(0, 0));
+		videoPanel.add(mediaPlayerComponent, BorderLayout.CENTER);
+
+		// Initialises and adds time label to show the current time of the video
+		// file
+		final JLabel timeLabel = new JLabel("0 seconds");
+		timeLabel.setBounds(618, 514, 114, 23);
+		panel.add(timeLabel);
+
+		// Initialises Volume Control buttons
+		JButton btnMute = new JButton("Mute"); // Mute the sound
+		JButton btnDecreaseVolume = new JButton("-Vol"); // Decrease the sound
+		JButton btnIncreaseVolume = new JButton("+Vol"); // Increase the sound
+
+		// Initialises playback control buttons
+		JButton btnPlaypause = new JButton("Play/Pause"); // Play or Pause
+		JButton btnBack = new JButton("<<"); // Rewind
+		JButton btnFord = new JButton(">>"); // Fast-Forward
+
+		// Sets the location of each of the buttons
+		btnMute.setBounds(416, 514, 88, 23);
+		btnDecreaseVolume.setBounds(318, 514, 88, 23);
+		btnIncreaseVolume.setBounds(514, 514, 89, 23);
+
+		btnPlaypause.setBounds(95, 514, 128, 23);
+		btnBack.setBounds(10, 514, 75, 23);
+		btnFord.setBounds(233, 514, 75, 23);
+
+		// Adds all the buttons to the button panel
+		panel.add(btnMute);
+		panel.add(btnDecreaseVolume);
+		panel.add(btnIncreaseVolume);
+
+		panel.add(btnPlaypause);
+		panel.add(btnBack);
+		panel.add(btnFord);
+		
+		JProgressBar progressBar = new JProgressBar();
+		progressBar.setBounds(738, 514, 420, 23);
+		panel.add(progressBar);
+
+		btnMute.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				video.mute();
+			}
+		});
+
+		btnDecreaseVolume.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				video.setVolume(video.getVolume() - 10);
+			}
+		});
+
+		btnIncreaseVolume.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (video.getVolume() >= 190) { // Limits the volume to 200 to
+												// prevent audio distortion.
+					video.setVolume(200);
+				} else {
+					video.setVolume(video.getVolume() + 10);
+				}
+			}
+		});
+
+		btnPlaypause.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				video.pause();
+			}
+		});
+		
+		final Timer skipBackTimer = new Timer(100, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				video.skip(-200);
+			}
+		});
+		final ButtonModel backModel = btnBack.getModel();
+		backModel.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent chgeEvent) {
+				if (backModel.isPressed() && !skipBackTimer.isRunning()) {
+					skipBackTimer.start();
+				} else if (!backModel.isPressed() && skipBackTimer.isRunning()) {
+					skipBackTimer.stop();
+				}
+			}
+		});
+
+		final ButtonModel fordModel = btnFord.getModel();
+		fordModel.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent chgeEvent) {
+				if (fordModel.isPressed()) {
+					video.setRate(2);
+				} else if (!fordModel.isPressed()) {
+					video.setRate(1);
+				}
+			}
+		});
+
+		Timer timer = new Timer(200, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				timeLabel.setText((video.getTime() / 1000) + " seconds");
+			}
+		});
+		timer.start();
+
+	}
+}
