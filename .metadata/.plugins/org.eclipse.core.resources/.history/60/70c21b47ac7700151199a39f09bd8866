@@ -1,0 +1,25 @@
+package pkgBashProcesses;
+
+import java.io.IOException;
+
+import javax.swing.SwingWorker;
+
+import pgkGUI.MediaPlayer;
+
+public class ProcessMerge  extends SwingWorker<Void, Void> {
+	
+	@Override
+	protected Void doInBackground() throws Exception {
+		
+		cmd = "ffmpeg -y -i " + MediaPlayer.getVideoLocation() + " -i .convert.mp3 -filter_complex amix=inputs=2 "
+				+ outputLocation;
+		ProcessBuilder builderAdd = new ProcessBuilder("/bin/bash", "-c", cmd);
+		try {
+			Process process = builderAdd.start();
+			process.waitFor();
+		} catch (IOException | InterruptedException e1) {
+			e1.printStackTrace();
+		}
+		return null;
+	}
+}

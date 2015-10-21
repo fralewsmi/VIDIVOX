@@ -1,0 +1,20 @@
+package pkgProcesses;
+
+import java.io.IOException;
+
+import javax.swing.SwingWorker;
+
+import pgkGUI.InputText;
+
+public class FestivalTTS extends SwingWorker<Void, Void> {
+	
+	String textInput = InputText.getTextInput();
+	
+	String cmd = "echo " + textInput + " | festival --tts";
+	ProcessBuilder builderPlay = new ProcessBuilder("/bin/bash", "-c", cmd);
+	try {
+		Process process = builderPlay.start();
+	} catch (IOException e1) {
+		e1.printStackTrace();
+	}
+}

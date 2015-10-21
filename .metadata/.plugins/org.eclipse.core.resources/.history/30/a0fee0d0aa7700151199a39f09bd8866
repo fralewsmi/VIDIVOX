@@ -1,0 +1,19 @@
+package pkgBashProcesses;
+
+import java.io.IOException;
+
+import pgkGUI.InputText;
+
+public class ProcessSaveText {
+	
+	String textInput = InputText.getTextInput();
+	
+	String cmd = "echo " + textInput + " > .text.txt";
+	ProcessBuilder builderText = new ProcessBuilder("/bin/bash", "-c", cmd);
+	try {
+		@SuppressWarnings("unused")
+		Process process = builderText.start();
+	} catch (IOException e1) {
+		e1.printStackTrace();
+	
+}

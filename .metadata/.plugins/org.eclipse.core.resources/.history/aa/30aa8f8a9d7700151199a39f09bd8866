@@ -1,0 +1,8 @@
+package pgkGUI;
+
+public class Main {
+
+	public static void main(final String[] args) {
+		MediaPlayer mediaPlayer = new MediaPlayer();
+	}
+}

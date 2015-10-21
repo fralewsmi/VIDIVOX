@@ -1,0 +1,40 @@
+package pkgProcesses;
+
+import java.io.File;
+import java.io.IOException;
+
+import javax.swing.SwingWorker;
+
+import pgkGUI.InputText;
+import pgkGUI.NameFile;
+
+public class SaveTTS extends SwingWorker<Void, Void> {
+	
+	String textInput = InputText.getTextInput();
+	
+	@Override
+	protected Void doInBackground() throws Exception {
+		File file = new File(".text.txt");
+		file.delete();
+		String cmd = "echo " + textInput + " > .text.txt";
+		ProcessBuilder builderText = new ProcessBuilder("/bin/bash", "-c", cmd);
+		try {
+			Process process = builderText.start();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		file = new File(".wave.wav");
+		file.delete();
+		cmd = "text2wave -o .wave.wav .text.txt";
+		ProcessBuilder builderWave = new ProcessBuilder("/bin/bash", "-c", cmd);
+		try {
+			Process process = builderWave.start();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		NameFile nameFile = new NameFile();
+		nameFile.setVisible(true);
+		return null;
+	}
+	
+}

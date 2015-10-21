@@ -1,0 +1,23 @@
+package pkgBashProcesses;
+
+import java.io.IOException;
+
+import javax.swing.SwingWorker;
+
+public class ProcessMerge  extends SwingWorker<Void, Void> {
+	
+	@Override
+	protected Void doInBackground() throws Exception {
+		String textInput = InputText.getTextInput();
+		
+		String cmd = "echo " + textInput + " > .text.txt";
+		ProcessBuilder builderText = new ProcessBuilder("/bin/bash", "-c", cmd);
+		try {
+			@SuppressWarnings("unused")
+			Process process = builderText.start();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		return null;
+	}
+}
