@@ -1,0 +1,7 @@
+package pkgBackgroundTasks;
+
+import javax.swing.SwingWorker;
+
+public class SaveVideo  extends SwingWorker<Void, Void> {
+	
+}

@@ -1,0 +1,73 @@
+package pgkGUI;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+import java.awt.Font;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextPane;
+import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
+import javax.swing.border.EmptyBorder;
+
+/*
+ * Simple list of instructions on how to use this program 
+ * Presented in a JTextPane 
+ */
+@SuppressWarnings("serial")
+public class Help extends JFrame {
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					Help frame = new Help();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	private JPanel contentPane;
+
+	/**
+	 * Create the frame.
+	 */
+	public Help() {
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setLayout(new BorderLayout(0, 0));
+		setContentPane(contentPane);
+
+		JLabel lblHelp = new JLabel("Help");
+		lblHelp.setHorizontalAlignment(SwingConstants.CENTER);
+		lblHelp.setFont(new Font("Tahoma", Font.PLAIN, 32));
+		contentPane.add(lblHelp, BorderLayout.NORTH);
+
+		// simple text pane to show the help info
+		JTextPane textPane = new JTextPane();
+		textPane.setEditable(false);
+		String t = "1) Load a video:\nA video can be loaded up by selecting 'Load Video' from the file menu.\n"
+				+ "2) Add an audio track:\nAn audio track can be added to the video by selecting 'Add Audio' from the file menu after selecting a video.\n"
+				+ "3) Add a text to speech voice:\nSelecting 'Add Voice' from the file menu after selecting a video brings up the text to speech window.\n"
+				+ "User input can be typed in the text box. Enter a single sentance only"
+				+ "3.1) Preview the text to speech:\nEnter your text and press 'Play'.\n"
+				+ "3.2) Save the text to speech to an mp3 file:\nPress 'Save to File', a window will pop up promping you to specify the save location\n"
+				+ "3.2) Add the text to speech to the video:\nPress 'Add to Video'.\n"
+				+ "4) Save the video:\nSelect 'Save Video' to save the current video, a window will pop up promping you to specify the save location\n";
+
+		textPane.setText(t);
+		contentPane.add(textPane, BorderLayout.CENTER);
+	}
+
+}

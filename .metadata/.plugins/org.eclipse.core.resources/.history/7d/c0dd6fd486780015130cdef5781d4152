@@ -1,0 +1,28 @@
+package pkgBackgroundTasks;
+
+import java.io.File;
+
+import javax.swing.SwingWorker;
+
+public class DeleteHidden extends SwingWorker {
+
+	// delete the temporary hidden files that are created during the running of the program
+	@Override
+	protected Object doInBackground() throws Exception {
+		
+		File file = new File(".text.txt");
+		file.delete();
+		
+		file = new File(".wave.wav");
+		file.delete();
+		
+		file = new File(".convert.mp3");
+		file.delete();
+		
+		file = new File(".out.mp4");
+		file.delete();
+		return null;
+	}
+	
+	
+}

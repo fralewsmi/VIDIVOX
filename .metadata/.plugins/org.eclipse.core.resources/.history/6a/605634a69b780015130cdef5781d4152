@@ -1,0 +1,13 @@
+package pkgBackgroundTasks;
+
+import javax.swing.SwingWorker;
+
+public class SaveVideo  extends SwingWorker<Void, Void> {
+
+	@Override
+	protected Void doInBackground() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+}

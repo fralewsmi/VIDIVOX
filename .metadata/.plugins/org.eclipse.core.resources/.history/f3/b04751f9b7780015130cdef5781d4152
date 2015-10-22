@@ -1,0 +1,60 @@
+package pkgBackgroundTasks;
+
+import java.io.File;
+
+import javax.swing.SwingWorker;
+
+import pgkGUI.InputText;
+import pgkGUI.MediaPlayer;
+import pkgBashProcesses.ProcessConvert;
+import pkgBashProcesses.ProcessMerge;
+import pkgBashProcesses.ProcessSaveText;
+import pkgBashProcesses.ProcessText2Wave;
+
+public class MergeTTS extends SwingWorker<Void, Void> {
+
+	String textInput = InputText.getTextInput();
+
+	// Multiple process builders with festival, text2wave and ffmpeg
+	@Override
+	protected Void doInBackground() throws Exception {
+		try {
+			File file = new File(".text.txt");
+			file.delete();
+			ProcessSaveText saveText = new ProcessSaveText();
+			saveText.execute();
+			
+			System.out.print("1/n");
+			
+			file = new File(".wave.wav");
+			file.delete();
+			ProcessText2Wave txt2wav = new ProcessText2Wave();
+			txt2wav.execute();
+			
+			System.out.print("2/n");
+			
+			ProcessConvert convert = new ProcessConvert();
+			convert.execute();
+			
+			System.out.print("3/n");
+			
+			ProcessMerge merge = new ProcessMerge();
+			merge.execute();
+			
+			System.out.print("4/n");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		MediaPlayer.setVideoLocation(".outputTTS.mp4");
+		return null;
+	}
+
+	// Play the new video once the process is done
+	@Override
+	protected void done() {
+		MediaPlayer.getMediaPlayerComponent().getMediaPlayer().playMedia(MediaPlayer.getVideoLocation());
+	}
+
+}

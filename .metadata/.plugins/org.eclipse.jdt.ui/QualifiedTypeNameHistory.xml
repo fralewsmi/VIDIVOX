@@ -3,4 +3,15 @@
 <fullyQualifiedTypeName name="java.nio.file.Files"/>
 <fullyQualifiedTypeName name="java.nio.file.Path"/>
 <fullyQualifiedTypeName name="java.io.File"/>
+<fullyQualifiedTypeName name="pkgProcesses.MergeTTS"/>
+<fullyQualifiedTypeName name="pgkGUI.InputText"/>
+<fullyQualifiedTypeName name="pkgProcesses.FestivalTTS"/>
+<fullyQualifiedTypeName name="pkgProcesses.SaveTTS"/>
+<fullyQualifiedTypeName name="pgkGUI.NameFile"/>
+<fullyQualifiedTypeName name="pkgBashProcesses.ProcessSaveText"/>
+<fullyQualifiedTypeName name="pkgBashProcesses.ProcessText2Wave"/>
+<fullyQualifiedTypeName name="pgkGUI.MediaPlayer"/>
+<fullyQualifiedTypeName name="pkgBackgroundTasks.MergeTTS"/>
+<fullyQualifiedTypeName name="javax.swing.JProgressBar"/>
+<fullyQualifiedTypeName name="javax.swing.SwingWorker"/>
 </qualifiedTypeNameHistroy>

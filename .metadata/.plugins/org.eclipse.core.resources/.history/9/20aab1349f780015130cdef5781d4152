@@ -1,0 +1,23 @@
+package pgkGUI;
+
+import java.io.File;
+
+import javax.swing.SwingUtilities;
+
+public class Main {
+
+	public static void main(final String[] args) {
+		
+		// make the temp dir
+		File dir = new File(".VIDEVOX_TEMP");
+		dir.mkdir();
+		
+		// run MediaPlayer
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				new MediaPlayer(args);
+			}
+		});
+	}
+}

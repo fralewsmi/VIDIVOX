@@ -1,0 +1,41 @@
+package pkgBackgroundTasks;
+
+import java.io.IOException;
+
+import javax.swing.SwingWorker;
+
+import pgkGUI.MediaPlayer;
+import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
+
+public class AudioChanger extends SwingWorker<Void, Void> {
+	
+	private String videoLocation = MediaPlayer.getVideoLocation();
+	private String audioLocation = MediaPlayer.getAudioLocation();
+	private EmbeddedMediaPlayerComponent mediaPlayerComponent = MediaPlayer.getMediaPlayerComponent();
+	
+	// Use a process builder with fmmpeg to add the selected audio to the video
+	@Override 
+	protected Void doInBackground() throws Exception {
+		String outputLocation = ".out.mp4";
+		String cmd = "ffmpeg -y -i " + videoLocation + " -i " + audioLocation + " -map 0:v -map 1:a "+ outputLocation;
+		ProcessBuilder builderAudio = new ProcessBuilder("/bin/bash", "-c", cmd);
+		try {
+			Process process = builderAudio.start();
+			process.waitFor();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		MediaPlayer.setVideoLocation(outputLocation);
+		return null;
+	}
+	
+	// Play the new video once the process is finished
+	@Override
+	protected void done() {
+		videoLocation = MediaPlayer.getVideoLocation();
+		mediaPlayerComponent.getMediaPlayer().playMedia(videoLocation);
+	}
+	
+}

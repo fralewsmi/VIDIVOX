@@ -1,0 +1,36 @@
+package pkgBackgroundTasks;
+
+import java.io.IOException;
+
+import javax.swing.SwingWorker;
+
+public class SaveVideo  extends SwingWorker<Void, Void> {
+
+	@Override
+	protected Void doInBackground() throws Exception {
+		
+		
+		JFileChooser fileChooser = new JFileChooser();
+		if (fileChooser.showSaveDialog(modalToComponent) == JFileChooser.APPROVE_OPTION) {
+		  File file = fileChooser.getSelectedFile();
+		  // save to file
+		}
+		
+		String outputLocation = ".out.mp4";
+		String cmd = "mv "+ oldname + " " + newname;
+		ProcessBuilder builderAudio = new ProcessBuilder("/bin/bash", "-c", cmd);
+		try {
+			Process process = builderAudio.start();
+			process.waitFor();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		videoLocation = outputLocation;
+		return null;
+	}
+		return null;
+	}
+	
+}

@@ -6,30 +6,60 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
-import pkgBackgroundTasks.FestivalTTS;
 import pkgBackgroundTasks.MergeTTS;
 import pkgBackgroundTasks.SaveTTS;
+import pkgBashProcesses.ProcessFestival;
 
+/*
+ * Window that is opened when 'Select Audio' is pressed
+ * Contains a JTextArea for user input
+ * Gives options to preview text to speech,
+ * save the text to speech as an mp3 file
+ * and overly the text to speech onto the currently selected video
+ */
 @SuppressWarnings("serial")
 public class InputText extends JFrame {
-
-	private JPanel contentPane;
-	private JLabel lblNewLabel = new JLabel("Enter Text-To-Speech");
+	
+	// Initialize static fields (used elsewhere)
 	private static JTextArea textArea = new JTextArea();
+	private static JProgressBar progressBar;
+	private static String audioSaveLocation = "";
+	
+	// Getter and setter methods for static fields
+	public static String getAudioSaveLocation() {
+		return audioSaveLocation;
+	}
+	
+	public static void setAudioSaveLocation(String location) {
+		audioSaveLocation = location;
+	}
+
+	public static JProgressBar getProgressBar() {
+		return progressBar;
+	}
+
+	// Gets the text in text area
+	public static String getTextInput() {
+		return textArea.getText();
+	}
+
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					InputText frame = new InputText();
@@ -41,11 +71,15 @@ public class InputText extends JFrame {
 		});
 	}
 
+	private final JPanel contentPane;
+
+	private final JLabel lblNewLabel = new JLabel("Enter Text-To-Speech");
+
 	/**
 	 * Create the frame.
 	 */
 	public InputText() {
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 589, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -59,51 +93,59 @@ public class InputText extends JFrame {
 
 		textArea.setBounds(5, 44, 553, 182);
 		contentPane.add(textArea);
-				
+
 		JProgressBar progressBar = new JProgressBar();
 		progressBar.setBounds(446, 238, 131, 23);
 		contentPane.add(progressBar);
-		
-		// Use process builder with festival to play the text to speech
+
+		// Play the text to speech
 		JButton btnPlay = new JButton("Play");
 		btnPlay.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				FestivalTTS festivalTTS = new FestivalTTS();
-				festivalTTS.execute();
+				// process contained in ProcessFestival class
+				ProcessFestival festival = new ProcessFestival();
+				festival.execute();
 			}
 		});
 		btnPlay.setBounds(5, 238, 108, 23);
 		contentPane.add(btnPlay);
 
-		// Use process builder to save the output of the festival tts with text2wave 
+		JFileChooser audioSaver = new JFileChooser();
+
+		// Save the output of the festival tts with text2wave
 		JButton btnSave = new JButton("Save To File");
 		btnSave.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				SaveTTS saveTTS = new SaveTTS();
-				saveTTS.execute();
+				int returnVal = audioSaver.showSaveDialog(contentPane);
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					// Use file chooser select and save to that location
+					setAudioSaveLocation(audioSaver.getSelectedFile().toString());
+					// process contained in SaveTTS class
+					SaveTTS saveTTS = new SaveTTS();
+					saveTTS.execute();
+				}
+
 			}
+
 		});
 		btnSave.setBounds(125, 238, 150, 23);
 		contentPane.add(btnSave);
-		
-		// Add the festival tts to the video with a background task
+
+		// Add the festival tts to the video
 		JButton btnAdd = new JButton("Add To Video");
 		btnAdd.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				progressBar.setIndeterminate(true);
+				// Process contained in MergeTTS class
 				MergeTTS mergeTTS = new MergeTTS();
 				mergeTTS.execute();
-				progressBar.setIndeterminate(false);
 				setVisible(false);
 			}
 		});
 		btnAdd.setBounds(287, 238, 150, 23);
 		contentPane.add(btnAdd);
 
-		
-	}
-
-	public static String getTextInput() {
-		return textArea.getText();
 	}
 }

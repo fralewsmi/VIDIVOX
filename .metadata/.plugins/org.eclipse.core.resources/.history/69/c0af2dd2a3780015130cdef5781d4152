@@ -1,0 +1,42 @@
+package pkgBackgroundTasks;
+
+import java.io.IOException;
+
+import javax.swing.SwingWorker;
+
+import pgkGUI.MediaPlayer;
+
+public class SaveVideo  extends SwingWorker<Void, Void> {
+
+	private String videoLocation = MediaPlayer.getVideoLocation();
+	private String saveLocation = MediaPlayer.getVideoSaveLocation();
+	
+	@Override
+	protected Void doInBackground() throws Exception {
+		
+		String cmd = "mv "+ videoLocation + " " + saveLocation;
+		ProcessBuilder builderCopy = new ProcessBuilder("/bin/bash", "-c", cmd);
+		try {
+			Process process = builderCopy.start();
+			process.waitFor();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		cmd = "mv "+ videoLocation + " " + saveLocation;
+		ProcessBuilder builderRename = new ProcessBuilder("/bin/bash", "-c", cmd);
+		try {
+			Process process = builderRename.start();
+			process.waitFor();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+}

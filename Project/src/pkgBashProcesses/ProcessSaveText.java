@@ -6,13 +6,22 @@ import javax.swing.SwingWorker;
 
 import pgkGUI.InputText;
 
-public class ProcessSaveText  extends SwingWorker<Void, Void> {
-	
+public class ProcessSaveText extends SwingWorker<Void, Void> {
+
+	private static final String TEXTLOCATION = ".text.txt";
+
+	public static String getTextLocation() {
+		return TEXTLOCATION;
+	}
+
 	@Override
 	protected Void doInBackground() throws Exception {
+
 		String textInput = InputText.getTextInput();
-		
-		String cmd = "echo " + textInput + " > .text.txt";
+
+		// BASH command to output the contents of the user input into a text
+		// file
+		String cmd = "echo " + textInput + " > " + TEXTLOCATION;
 		ProcessBuilder builderText = new ProcessBuilder("/bin/bash", "-c", cmd);
 		try {
 			@SuppressWarnings("unused")

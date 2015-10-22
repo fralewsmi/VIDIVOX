@@ -1,0 +1,26 @@
+package pkgBashProcesses;
+
+import java.io.IOException;
+
+import javax.swing.SwingWorker;
+
+import pgkGUI.InputText;
+
+public class ProcessSaveText extends SwingWorker<Void, Void> {
+
+	@Override
+	protected Void doInBackground() throws Exception {
+		
+		// BASH command to output the contents of the user input into a text file
+		String textInput = InputText.getTextInput();
+		String cmd = "echo " + textInput + " > .text.txt";
+		ProcessBuilder builderText = new ProcessBuilder("/bin/bash", "-c", cmd);
+		try {
+			@SuppressWarnings("unused")
+			Process process = builderText.start();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		return null;
+	}
+}

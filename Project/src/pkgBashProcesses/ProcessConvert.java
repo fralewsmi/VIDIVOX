@@ -4,12 +4,21 @@ import java.io.IOException;
 
 import javax.swing.SwingWorker;
 
-public class ProcessConvert  extends SwingWorker<Void, Void> {
-	
+public class ProcessConvert extends SwingWorker<Void, Void> {
+
+	private static final String CONVERTLOCATION = ".convert.mp3";
+
+	public static String getConvertLocation() {
+		return CONVERTLOCATION;
+	}
+
 	@Override
 	protected Void doInBackground() throws Exception {
-		
-		String cmd = "ffmpeg -y -i .wave.wav -codec:a libmp3lame -qscale:a 2 .convert.mp3";
+
+		String waveLocation = ProcessText2Wave.getWaveLocation();
+
+		// BASH command to convert the wave file into an mp3
+		String cmd = "ffmpeg -y -i " + waveLocation + " -codec:a libmp3lame -qscale:a 2 " + CONVERTLOCATION;
 		ProcessBuilder builderConvert = new ProcessBuilder("/bin/bash", "-c", cmd);
 		try {
 			Process process = builderConvert.start();

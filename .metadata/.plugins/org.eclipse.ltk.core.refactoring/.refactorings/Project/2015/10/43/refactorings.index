@@ -7,3 +7,14 @@
 1445395622788	Delete element
 1445395658436	Rename package 'pkgProcesses'
 1445400941701	Rename type 'FestivalProcess'
+1445476131017	Rename type 'FestivalTTS'
+1445476135959	Move compilation unit
+1445485394190	Rename type 'DeleteIndeterinate'
+1445504392134	Move compilation unit
+1445507916381	Move compilation unit
+1445507926623	Rename type 'ProcessFestival'
+1445509687398	Delete element
+1445523254130	Rename type 'SaveFile'
+1445523278500	Move compilation unit
+1445523307624	Rename type 'FestivalTTS'
+1445523311524	Move compilation unit
