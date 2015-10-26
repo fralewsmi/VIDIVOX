@@ -1,0 +1,25 @@
+package pkgBashProcesses;
+
+import java.io.IOException;
+
+import pgkGUI.InputText;
+
+public class ProcessSaveMp3 {
+
+	public void run() {
+
+		String filename = InputText.getAudioSaveLocation();
+
+		// Bash process to convert wave file into user-specified mp3
+		// This command can fail on some machines, even if it works in terminal, no file is output
+		String cmd = "ffmpeg -y -i .wave.wav -codec:a libmp3lame -qscale:a 2 " + filename;
+		ProcessBuilder builderWave = new ProcessBuilder("/bin/bash", "-c", cmd);
+		try {
+			Process process = builderWave.start();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return;
+	}
+
+}

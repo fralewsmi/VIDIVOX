@@ -29,19 +29,15 @@ import pkgBashProcesses.ProcessFestival;
  */
 @SuppressWarnings("serial")
 public class InputText extends JFrame {
-	
+
 	// Initialize static fields (used elsewhere)
 	private static JTextArea textArea = new JTextArea();
 	private static JProgressBar progressBar;
 	private static String audioSaveLocation = "";
-	
+
 	// Getter and setter methods for static fields
 	public static String getAudioSaveLocation() {
 		return audioSaveLocation;
-	}
-	
-	public static void setAudioSaveLocation(String location) {
-		audioSaveLocation = location;
 	}
 
 	public static JProgressBar getProgressBar() {
@@ -52,7 +48,6 @@ public class InputText extends JFrame {
 	public static String getTextInput() {
 		return textArea.getText();
 	}
-
 
 	/**
 	 * Launch the application.
@@ -69,6 +64,10 @@ public class InputText extends JFrame {
 				}
 			}
 		});
+	}
+
+	public static void setAudioSaveLocation(String location) {
+		audioSaveLocation = location;
 	}
 
 	private final JPanel contentPane;
@@ -105,7 +104,7 @@ public class InputText extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// process contained in ProcessFestival class
 				ProcessFestival festival = new ProcessFestival();
-				festival.execute();
+				festival.run();
 			}
 		});
 		btnPlay.setBounds(5, 238, 108, 23);

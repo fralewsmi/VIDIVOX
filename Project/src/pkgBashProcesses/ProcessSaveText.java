@@ -2,11 +2,9 @@ package pkgBashProcesses;
 
 import java.io.IOException;
 
-import javax.swing.SwingWorker;
-
 import pgkGUI.InputText;
 
-public class ProcessSaveText extends SwingWorker<Void, Void> {
+public class ProcessSaveText {
 
 	private static final String TEXTLOCATION = ".text.txt";
 
@@ -14,8 +12,7 @@ public class ProcessSaveText extends SwingWorker<Void, Void> {
 		return TEXTLOCATION;
 	}
 
-	@Override
-	protected Void doInBackground() throws Exception {
+	public void run() {
 
 		String textInput = InputText.getTextInput();
 
@@ -29,6 +26,6 @@ public class ProcessSaveText extends SwingWorker<Void, Void> {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		return null;
+		return;
 	}
 }

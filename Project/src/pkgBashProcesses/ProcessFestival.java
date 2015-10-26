@@ -2,14 +2,11 @@ package pkgBashProcesses;
 
 import java.io.IOException;
 
-import javax.swing.SwingWorker;
-
 import pgkGUI.InputText;
 
-public class ProcessFestival extends SwingWorker<Void, Void> {
+public class ProcessFestival {
 
-	@Override
-	protected Void doInBackground() throws Exception {
+	public void run() {
 
 		String textInput = InputText.getTextInput();
 
@@ -22,7 +19,7 @@ public class ProcessFestival extends SwingWorker<Void, Void> {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		return null;
+		return;
 	}
 
 }

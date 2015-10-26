@@ -16,11 +16,12 @@
 	</section>
 	<section name="FatJarPackageWizard">
 		<item value="/home/fraser/workspace/VIDIVOX" key="FatJarPackageWizardPage.ANTSCRIPT_LOCATION"/>
-		<item value="MediaPlayer (1) - Project" key="FatJarPackageWizardPage.LAUNCH_CONFIGURATION_SELECTION_NAME"/>
-		<item value="/home/fraser/Desktop/VIDEVOX.jar" key="FatJarPackageWizardPage.DESTINATION_PATH_SELECTION"/>
+		<item value="Main - Project" key="FatJarPackageWizardPage.LAUNCH_CONFIGURATION_SELECTION_NAME"/>
+		<item value="/home/fraser/Desktop/VIDIVOX.jar" key="FatJarPackageWizardPage.DESTINATION_PATH_SELECTION"/>
 		<item value="false" key="FatJarPackageWizardPage.ANTSCRIPT_SAVE"/>
 		<item value="2" key="FatJarPackageWizardPage.LIBRARY_HANDLING"/>
 		<list key="FatJarPackageWizardPage.DESTINATION_NAMES_ID">
+			<item value="/home/fraser/Desktop/VIDIVOX.jar"/>
 			<item value="/home/fraser/Desktop/VIDEVOX.jar"/>
 		</list>
 		<list key="FatJarPackageWizardPage.ANTSCRIPT_LOCATION_HISTORY">

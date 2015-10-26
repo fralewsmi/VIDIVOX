@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="java.nio.file.Files"/>
 <fullyQualifiedTypeName name="java.nio.file.Path"/>
-<fullyQualifiedTypeName name="java.io.File"/>
 <fullyQualifiedTypeName name="pkgProcesses.MergeTTS"/>
-<fullyQualifiedTypeName name="pgkGUI.InputText"/>
 <fullyQualifiedTypeName name="pkgProcesses.FestivalTTS"/>
 <fullyQualifiedTypeName name="pkgProcesses.SaveTTS"/>
 <fullyQualifiedTypeName name="pgkGUI.NameFile"/>
@@ -14,4 +11,11 @@
 <fullyQualifiedTypeName name="pkgBackgroundTasks.MergeTTS"/>
 <fullyQualifiedTypeName name="javax.swing.JProgressBar"/>
 <fullyQualifiedTypeName name="javax.swing.SwingWorker"/>
+<fullyQualifiedTypeName name="pkgBackgroundTasks.DeleteHidden"/>
+<fullyQualifiedTypeName name="java.lang.System"/>
+<fullyQualifiedTypeName name="javax.swing.JFileChooser"/>
+<fullyQualifiedTypeName name="java.io.File"/>
+<fullyQualifiedTypeName name="com.sun.jna.platform.FileUtils"/>
+<fullyQualifiedTypeName name="java.nio.file.Files"/>
+<fullyQualifiedTypeName name="pgkGUI.InputText"/>
 </qualifiedTypeNameHistroy>

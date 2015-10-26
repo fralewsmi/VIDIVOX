@@ -2,9 +2,7 @@ package pkgBashProcesses;
 
 import java.io.IOException;
 
-import javax.swing.SwingWorker;
-
-public class ProcessText2Wave extends SwingWorker<Void, Void> {
+public class ProcessText2Wave {
 
 	private static final String WAVELOCATION = ".wave.wav";
 
@@ -12,8 +10,7 @@ public class ProcessText2Wave extends SwingWorker<Void, Void> {
 		return WAVELOCATION;
 	}
 
-	@Override
-	protected Void doInBackground() throws Exception {
+	public void run() {
 
 		String textLocation = ProcessSaveText.getTextLocation();
 
@@ -26,6 +23,6 @@ public class ProcessText2Wave extends SwingWorker<Void, Void> {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		return null;
+		return;
 	}
 }

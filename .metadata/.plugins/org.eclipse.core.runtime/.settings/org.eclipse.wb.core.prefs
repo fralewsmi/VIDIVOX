@@ -1,3 +1,4 @@
 design.palette.flyout.width=169
-design.structure.flyout.width=200
+design.structure.flyout.dockLocation=2
+design.structure.flyout.width=233
 eclipse.preferences.version=1

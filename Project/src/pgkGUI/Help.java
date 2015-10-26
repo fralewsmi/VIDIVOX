@@ -62,9 +62,11 @@ public class Help extends JFrame {
 				+ "3) Add a text to speech voice:\n\tSelecting 'Add Voice' from the file menu after selecting a video brings up the text to speech window.\n\t"
 				+ "User input can be typed in the text box. Enter a single sentance only\n"
 				+ "3.1) Preview the text to speech:\n\tEnter your text and press 'Play'.\n"
-				+ "3.2) Save the text to speech to an mp3 file:\n\tPress 'Save to File', a window will pop up promping you to specify the save location\n"
+				+ "3.2) Save the text to speech to an mp3 file:\n\tPress 'Save to File', a window will pop up promping you to specify the save location\n\t"
+				+ "Please specify the file extension in the filename (.mp3)\n"
 				+ "3.2) Add the text to speech to the video:\n\tPress 'Add to Video'.\n"
-				+ "4) Save the video:\n\tSelect 'Save Video' to save the current video, a window will pop up promping you to specify the save location\n";
+				+ "4) Save the video:\n\tSelect 'Save Video' to save the current video, a window will pop up promping you to specify the save location\n\t"
+				+ "Please specify the file extension in the filename (.mp4 or .avi)\n";
 
 		textPane.setText(helpText);
 		contentPane.add(textPane, BorderLayout.CENTER);

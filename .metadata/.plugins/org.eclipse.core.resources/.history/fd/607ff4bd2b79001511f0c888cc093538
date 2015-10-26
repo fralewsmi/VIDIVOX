@@ -1,0 +1,39 @@
+package pkgBashProcesses;
+
+import java.io.IOException;
+
+import javax.swing.SwingWorker;
+
+import pgkGUI.MediaPlayer;
+
+public class ProcessMerge {
+
+	private static final String OUTPUTLOCATION = ".outputTTS.mp4";
+
+	public static String getOutputLocation() {
+		return OUTPUTLOCATION;
+	}
+	
+	public void run() {
+
+		String videoLocation = MediaPlayer.getVideoLocation();
+		String convertLocation = ProcessConvert.getConvertLocation();
+		
+		System.out.print(convertLocation+"\t");
+		System.out.print(videoLocation+"\t");
+		System.out.print(OUTPUTLOCATION+"\t");
+
+		// BASH command to merge the current video with the converted mp3 file
+		// to output an mp4
+		String cmd = "ffmpeg -y -i " + videoLocation + " -i " + convertLocation + " -filter_complex amix=inputs=2 "
+				+ OUTPUTLOCATION;
+		ProcessBuilder builderAdd = new ProcessBuilder("/bin/bash", "-c", cmd);
+		try {
+			@SuppressWarnings("unused")
+			Process process = builderAdd.start();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		return;
+	}
+}

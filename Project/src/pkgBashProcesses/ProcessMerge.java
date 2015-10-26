@@ -2,11 +2,9 @@ package pkgBashProcesses;
 
 import java.io.IOException;
 
-import javax.swing.SwingWorker;
-
 import pgkGUI.MediaPlayer;
 
-public class ProcessMerge extends SwingWorker<Void, Void> {
+public class ProcessMerge {
 
 	private static final String OUTPUTLOCATION = ".outputTTS.mp4";
 
@@ -14,8 +12,8 @@ public class ProcessMerge extends SwingWorker<Void, Void> {
 		return OUTPUTLOCATION;
 	}
 
-	@Override
-	protected Void doInBackground() throws Exception {
+	public void run() {
+		System.out.print("merge running\n");
 
 		String videoLocation = MediaPlayer.getVideoLocation();
 		String convertLocation = ProcessConvert.getConvertLocation();
@@ -26,11 +24,12 @@ public class ProcessMerge extends SwingWorker<Void, Void> {
 				+ OUTPUTLOCATION;
 		ProcessBuilder builderAdd = new ProcessBuilder("/bin/bash", "-c", cmd);
 		try {
+			@SuppressWarnings("unused")
 			Process process = builderAdd.start();
-			process.waitFor();
-		} catch (IOException | InterruptedException e1) {
+		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		return null;
+		System.out.print("merge finished\n");
+		return;
 	}
 }

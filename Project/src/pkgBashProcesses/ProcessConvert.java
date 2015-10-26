@@ -2,18 +2,16 @@ package pkgBashProcesses;
 
 import java.io.IOException;
 
-import javax.swing.SwingWorker;
+public class ProcessConvert {
 
-public class ProcessConvert extends SwingWorker<Void, Void> {
-
-	private static final String CONVERTLOCATION = ".convert.mp3";
+	private static final String CONVERTLOCATION = "convert.mp3";
 
 	public static String getConvertLocation() {
 		return CONVERTLOCATION;
 	}
 
-	@Override
-	protected Void doInBackground() throws Exception {
+	public void run() {
+		System.out.print("convert running\n");
 
 		String waveLocation = ProcessText2Wave.getWaveLocation();
 
@@ -21,11 +19,12 @@ public class ProcessConvert extends SwingWorker<Void, Void> {
 		String cmd = "ffmpeg -y -i " + waveLocation + " -codec:a libmp3lame -qscale:a 2 " + CONVERTLOCATION;
 		ProcessBuilder builderConvert = new ProcessBuilder("/bin/bash", "-c", cmd);
 		try {
+			@SuppressWarnings("unused")
 			Process process = builderConvert.start();
-			process.waitFor();
-		} catch (IOException | InterruptedException e1) {
+		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		return null;
+		System.out.print("convert finished\n");
+		return;
 	}
 }
